@@ -169,6 +169,16 @@ footer{font-size:13px;color:var(--muted);text-align:center;padding:8px}
     border-bottom: 1px dashed #A0D0E0;
 }
 
+/* 🌟 สไตล์ Warfarin 5 mg (โทนม่วง) */
+#dose5mgContainer {
+    background: #FAF8FF; /* ขาวอมม่วง */
+    border: 1px solid #AA8CFF;
+}
+#dose5mgContainer .pill-section-title {
+    color: #7E57C2;
+    border-bottom: 1px dashed #C9B6FF;
+}
+    
 .dose-input-row {
     display: flex;
     align-items: center;
@@ -401,6 +411,21 @@ footer{font-size:13px;color:var(--muted);text-align:center;padding:8px}
                 </div>
             </div>
 
+<div class="pill-dosing-container">
+    <div id="dose5mgContainer" class="dose-input-group">
+        <div class="pill-section-title">Warfarin <b>5</b> mg (เม็ดสีม่วง)</div>
+        <div class="dose-input-row" data-mg="5">
+            <label>เม็ด:</label>
+            <input type="number" step="0.5" min="0" value="" class="pill-count" oninput="calculateComparison(false)">
+            <label>×</label>
+            <input type="number" step="1" min="0" max="7" value="" class="day-count" oninput="calculateComparison(false)">
+            <label>วัน</label>
+        </div>
+        <button class="add-row-btn" onclick="addRow(5)">+ เพิ่มวัน/ขนาดยา 5 mg</button>
+    </div>
+</div>
+
+            
             <div class="comparison-section">
                 <h4>ข้อมูลเปรียบเทียบ/วันนัด</h4>
                 <div class="dose-input-row" style="margin-bottom: 10px;">
