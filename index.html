@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>เครื่องคำนวณการให้ยา Warfarin ห้องยาโรงพยาบาลพุนพิน (แก้ไข 5mg)</title>
+<title>เครื่องคำนวณการให้ยา Warfarin ห้องยาโรงพยาบาลพุนพิน (แก้ไข 5mg และคงตรรกะ 2/3mg)</title>
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
 /* --- COPY PROTECTION STYLES (เดิม) --- */
@@ -555,7 +555,7 @@ function calculateComparison(isManualClick) {
         const weeklyMgFromRow = pillCount * mg * dayCount;
         totalWeeklyMg += weeklyMgFromRow;
         
-        // **แก้ไข: โครงสร้าง if/else if เพื่อรวมทุกชนิดยา**
+        // โครงสร้าง if/else if เพื่อรวมทุกชนิดยา
         if (mg === 3) {
             total3mgPillsFor7Days += pillCount * dayCount;
         } else if (mg === 2) {
@@ -597,9 +597,9 @@ function calculateComparison(isManualClick) {
     // คำนวณจำนวนเม็ดที่ต้องจ่ายสำหรับวันนัด (ปัดขึ้น)
     const final3mgPills = Math.ceil(total3mgPillsFor7Days * (dispenseDays / 7));
     const final2mgPills = Math.ceil(total2mgPillsFor7Days * (dispenseDays / 7));
-    const final5mgPills = Math.ceil(total5mgPillsFor7Days * (dispenseDays / 7)); // **แก้ไข: เพิ่มการคำนวณ 5 mg**
+    const final5mgPills = Math.ceil(total5mgPillsFor7Days * (dispenseDays / 7)); 
 
-    // **แก้ไข: เพิ่มการแสดงผล 5 mg ใน resultHTML**
+    // เพิ่มการแสดงผล 5 mg ใน resultHTML
     let resultHTML = `
         <p>ขนาดยาใหม่ต่อสัปดาห์ (7 วัน): <strong>${totalWeeklyMg.toFixed(2)} mg</strong> (เฉลี่ย ${dailyMg.toFixed(2)} mg/วัน)</p>
         <p>ความแตกต่างจากขนาดยาเดิม (${initialWeeklyDose.toFixed(2)} mg): <strong style="color: ${diffMg >= 0 ? 'red' : 'green'};">${diffMg >= 0 ? '+' : ''}${diffMg.toFixed(2)} mg (${diffPct >= 0 ? '+' : ''}${diffPct.toFixed(2)}%)</strong></p>
@@ -694,8 +694,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function findBestCombo(target){
-        // ** NOTE: ฟังก์ชันนี้ใช้สำหรับเม็ด 2mg และ 3mg เท่านั้น และควรปรับปรุงหากต้องการรองรับ 5mg ในการคำนวณตาราง 7 วัน **
-        // ตรรกะเดิม: พยายามใช้ 3mg และ 2mg เพื่อเข้าใกล้ target ที่สุด (ไม่ได้รวม 5mg)
+        // ตรรกะเดิม: พยายามใช้ 3mg และ 2mg เพื่อเข้าใกล้ target ที่สุด (รวมครึ่งเม็ด)
         let bestCombo = { h3: 0, h2: 0, total: 0, type: 'mixed' };
         let minDiff = Infinity;
 
@@ -787,7 +786,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     } else if (pillChoice === '2') { 
                         t2 = t2 / 2; // t2 เดิมเป็นจำนวนครึ่งเม็ด
                         t3 = 0;
-                    } else if (pillChoice === 'both'){ // กรณีใช้ 2+3mg
+                    } else if (pillChoice === 'both'){ // กรณีใช้ 2+3mg (ตรรกะเดิมที่ห้ามแก้ไข)
                         t3 = t3 / 2; // ต้องหาร 2 เพื่อให้เป็นจำนวนเม็ด
                         t2 = t2 / 2;
                     }
@@ -822,7 +821,6 @@ document.addEventListener('DOMContentLoaded', function() {
             html += `</div>`;
         } else {
             const pillTypes = [];
-            // FIX: ไม่ได้เพิ่ม 5 mg ในส่วนคำนวณตาราง 7 วัน เนื่องจากตรรกะการกระจายยา 7 วันยังไม่รองรับ 5mg
             if (pillChoice === '3' || pillChoice === 'both' || pillChoice === '3mg_fixed_1dayoff') pillTypes.push({ label: '3 mg (เม็ด)', type: 3 });
             if (pillChoice === '2' || pillChoice === 'both' || pillChoice === '2mg_fixed_1dayoff') pillTypes.push({ label: '2 mg (เม็ด)', type: 2 });
             pillTypes.push({ label: 'รวม (mg)', type: 'total' });
@@ -844,7 +842,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         } else if (pillChoice === '2') { 
                             t2 = t2 / 2; // t2 เดิมเป็นจำนวนครึ่งเม็ด
                             t3 = 0;
-                        } else if (pillChoice === 'both'){ // กรณีใช้ 2+3mg
+                        } else if (pillChoice === 'both'){ // กรณีใช้ 2+3mg (ตรรกะเดิมที่ห้ามแก้ไข)
                             t3 = t3 / 2; 
                             t2 = t2 / 2;
                         }
@@ -947,7 +945,7 @@ document.addEventListener('DOMContentLoaded', function() {
                maxRound = Math.round(max / 2) * 2;
                avgRound = Math.round(avg / 2) * 2;
            } else {
-               // ตรรกะเดิม (รองรับครึ่งเม็ด)
+               // ตรรกะเดิม (รองรับครึ่งเม็ด 2mg และ 3mg)
                minRound = roundHalf(min);
                maxRound = roundHalf(max);
                avgRound = roundHalf(avg);
@@ -999,7 +997,7 @@ document.addEventListener('DOMContentLoaded', function() {
             } else if(pillChoice==='2'){
               const h2=Math.round(t.val/1.0); // h2 คือจำนวนครึ่งเม็ด 2mg
               best={h3:0,h2:h2,total:h2*1.0,type:'2mg'}; 
-            } else { // pillChoice === 'both'
+            } else { // pillChoice === 'both' (ตรรกะเดิมที่ห้ามแก้ไข)
               best=findBestCombo(t.val); // best.h3/h2 คือจำนวนครึ่งเม็ด
               best.type='mixed';
             }
@@ -1032,9 +1030,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     total3 += perDay3[i % 7]/2; // perDay3 คือจำนวนครึ่งเม็ด
                 } else if(best.type==='2mg'){
                     total2 += perDay2[i % 7]/2; // perDay2 คือจำนวนครึ่งเม็ด
-                } else if(best.type==='mixed'){
-                    total3 += perDay3[i % 7]/2; // perDay3 คือจำนวนครึ่งเม็ด
-                    total2 += perDay2[i % 7]/2; // perDay2 คือจำนวนครึ่งเม็ด
+                } else if(best.type==='mixed'){ // ตรรกะเดิมที่ห้ามแก้ไข
+                    total3 += perDay3[i % 7]/2; // perDay3 คือจำนวนครึ่งเม็ด -> หาร 2 เพื่อรวมเป็นเม็ดเต็ม
+                    total2 += perDay2[i % 7]/2; // perDay2 คือจำนวนครึ่งเม็ด -> หาร 2 เพื่อรวมเป็นเม็ดเต็ม
                 }
                 // NOTE: ไม่ได้รวม 5mg ในการคำนวณตาราง 7 วันเนื่องจากความซับซ้อนของการกระจายยา
             }
