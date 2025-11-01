@@ -591,6 +591,7 @@ function calculateComparison(isManualClick) {
     // คำนวณจำนวนเม็ดที่ต้องจ่ายสำหรับวันนัด (ปัดขึ้น) (ใช้ dispenseDays = 7 ถ้าผู้ใช้ไม่ใส่ค่า)
     const final3mgPills = Math.ceil(total3mgPillsFor7Days * (dispenseDays / 7));
     const final2mgPills = Math.ceil(total2mgPillsFor7Days * (dispenseDays / 7));
+     const final3mgPills = Math.ceil(total3mgPillsFor7Days * (dispenseDays / 7));
 
     let resultHTML = `
         <p>ขนาดยาใหม่ต่อสัปดาห์ (7 วัน): <strong>${totalWeeklyMg.toFixed(2)} mg</strong> (เฉลี่ย ${dailyMg.toFixed(2)} mg/วัน)</p>
@@ -599,6 +600,7 @@ function calculateComparison(isManualClick) {
         <p>สรุปจำนวนเม็ดยาสำหรับ <strong>${dispenseDays} วันนัด</strong>:</p>
         <p>Warfarin 3 mg: <strong>${final3mgPills} เม็ด</strong></p>
         <p>Warfarin 2 mg: <strong>${final2mgPills} เม็ด</strong></p>
+         <p>Warfarin 5 mg: <strong>${final5mgPills} เม็ด</strong></p>
     `;
     
     resultDiv.innerHTML = resultHTML;
