@@ -527,7 +527,8 @@ function calculateComparison(isManualClick) {
     let totalWeeklyMg = 0;
     let total3mgPillsFor7Days = 0;
     let total2mgPillsFor7Days = 0;
-
+ let total5mgPillsFor7Days = 0;
+    
     const allDoseRows = document.querySelectorAll('.standalone-calculator .dose-input-row');
     
     allDoseRows.forEach(row => {
@@ -557,6 +558,10 @@ function calculateComparison(isManualClick) {
         } else if (mg === 2) {
             total2mgPillsFor7Days += pillCount * dayCount;
         }
+    } else if (mg === 5) {
+            total5mgPillsFor7Days += pillCount * dayCount;
+        }
+        
     });
     
     // ซ่อนผลลัพธ์หากไม่มีการใส่ค่าใดๆ ในช่อง Warfarin
