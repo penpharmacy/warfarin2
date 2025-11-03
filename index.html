@@ -693,31 +693,38 @@ document.addEventListener('DOMContentLoaded', function() {
         return arr.map(p => Math.round(p)); 
     }
     
-    function findBestCombo(target){
+  //  function findBestCombo(target){
         // ตรรกะเดิม: พยายามใช้ 3mg และ 2mg เพื่อเข้าใกล้ target ที่สุด (รวมครึ่งเม็ด)
-        let bestCombo = { h3: 0, h2: 0, total: 0, type: 'mixed' };
-        let minDiff = Infinity;
+ //       let bestCombo = { h3: 0, h2: 0, total: 0, type: 'mixed' };
+  //      let minDiff = Infinity;
 
         // วนลูปหาจำนวน 3mg และ 2mg ที่เหมาะสมที่สุด (รวมครึ่งเม็ด)
-        for (let num3Half = 0; num3Half * 1.5 <= target + 3; num3Half++) { // num3Half คือจำนวนครึ่งเม็ด 3mg
-            for (let num2Half = 0; num2Half * 1.0 <= target + 3; num2Half++) { // num2Half คือจำนวนครึ่งเม็ด 2mg
-                const currentTotal = (num3Half * 1.5) + (num2Half * 1.0);
-                const diff = Math.abs(currentTotal - target);
+   //     for (let num3Half = 0; num3Half * 1.5 <= target + 3; num3Half++) { // num3Half คือจำนวนครึ่งเม็ด 3mg
+    //        for (let num2Half = 0; num2Half * 1.0 <= target + 3; num2Half++) { // num2Half คือจำนวนครึ่งเม็ด 2mg
+   //             const currentTotal = (num3Half * 1.5) + (num2Half * 1.0);
+   //             const diff = Math.abs(currentTotal - target);
 
-                if (diff < minDiff || (diff === minDiff && currentTotal >= target)) {
-                    minDiff = diff;
-                    bestCombo = { 
-                        h3: num3Half, // จำนวนครึ่งเม็ด 3mg
-                        h2: num2Half, // จำนวนครึ่งเม็ด 2mg
-                        total: roundTwoDecimals(currentTotal),
-                        type: 'mixed'
-                    };
-                }
-                // ถ้าเกินเป้าหมายมากไปไม่ต้องวนต่อ
-                if (currentTotal > target + 1.5) break; 
-            }
-        }
-        return bestCombo;
+    //            if (diff < minDiff || (diff === minDiff && currentTotal >= target)) {
+     //               minDiff = diff;
+      //              bestCombo = { 
+     //                   h3: num3Half, // จำนวนครึ่งเม็ด 3mg
+     //                   h2: num2Half, // จำนวนครึ่งเม็ด 2mg
+      //                  total: roundTwoDecimals(currentTotal),
+      //                  type: 'mixed'
+      //              };
+      //          }
+     //           // ถ้าเกินเป้าหมายมากไปไม่ต้องวนต่อ
+      //          if (currentTotal > target + 1.5) break; 
+      //      }
+     //   }
+    //    return bestCombo;
+  // }
+     function findBestCombo(target){
+        const numSets = Math.round(target / 5);
+        const h3 = numSets;
+        const h2 = numSets;
+        const total = h3*3 + h2*2;
+        return {h3:h3, h2:h2, total:total, type:'5mg'};
     }
     function generatePillImage(count, pillMg){
         let html = '';
